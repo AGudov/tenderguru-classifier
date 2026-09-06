@@ -68,7 +68,7 @@ X_test_tfidf = vectorizer.transform(X_test)
 print(f"   Размер матрицы: {X_train_tfidf.shape}")
 
 # =================== 4. ОБУЧЕНИЕ ===================
-print("\n🤖 Обучение Logistic Regression...")
+print("\n Обучение Logistic Regression...")
 
 model = LogisticRegression(
     max_iter=1000,
