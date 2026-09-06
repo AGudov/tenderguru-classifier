@@ -11,7 +11,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 print("=" * 60)
-print("🧠 МАССОВЫЙ ИНФЕРЕНС")
+print("МАССОВЫЙ ИНФЕРЕНС")
 print("=" * 60)
 
 # 1. Загрузка данных
@@ -31,7 +31,7 @@ with open(model_dir / 'models/model.pkl', 'rb') as f:
 with open(model_dir / 'models/vectorizer.pkl', 'rb') as f:
     vectorizer = pickle.load(f)
 
-print("✅ Модель и векторизатор загружены")
+print("Модель и векторизатор загружены")
 
 # 3. Подготовка данных
 texts = []
@@ -48,7 +48,7 @@ for item in contracts:
             'region': item.get('Region', ''),
         })
 
-print(f"📊 Обрабатывается {len(texts)} записей...")
+print(f"Обрабатывается {len(texts)} записей...")
 
 # 4. Инференс
 X = vectorizer.transform(texts)
@@ -66,7 +66,7 @@ for i, (p, prob) in enumerate(zip(preds, probs)):
 df = pd.DataFrame(rows)
 df.to_csv(output_file, index=False, encoding='utf-8-sig')
 
-print(f"✅ Результаты сохранены в {output_file}")
-print(f"📊 Всего предсказано: {len(df)}")
+print(f"Результаты сохранены в {output_file}")
+print(f"Всего предсказано: {len(df)}")
 print(f"   supply: {len(df[df['predicted_class'] == 'supply'])}")
 print(f"   work: {len(df[df['predicted_class'] == 'work'])}")
