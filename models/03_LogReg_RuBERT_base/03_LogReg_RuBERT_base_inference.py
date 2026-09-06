@@ -58,7 +58,7 @@ with open(model_dir / 'models/model.pkl', 'rb') as f:
 
 # 3. Загрузка RuBERT
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f"💻 Используется: {device}")
+print(f" Используется: {device}")
 
 tokenizer = AutoTokenizer.from_pretrained("DeepPavlov/rubert-base-cased")
 bert_model = AutoModel.from_pretrained("DeepPavlov/rubert-base-cased").to(device)
