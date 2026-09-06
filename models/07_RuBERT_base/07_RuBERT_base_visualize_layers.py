@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-# ПРАВИЛЬНЫЙ ПУТЬ К МОДЕЛИ (лежит в подпапке models)
+#  ПУТЬ К МОДЕЛИ 
 model_path = "./models"
 
 print("Загрузка модели...")
@@ -19,7 +19,7 @@ model = AutoModelForSequenceClassification.from_pretrained(model_path)
 model.eval()
 print("Модель загружена.")
 
-# ГЕНЕРИРУЕМ 60 РЕАЛИСТИЧНЫХ НАЗВАНИЙ (30 Supply, 30 Work)
+# ГЕНЕРИРУЕМ 60 РЕАЛИСТИЧНЫХ НАЗВАНИЙ (30 Supply, 30 Work) для примеров
 supply_texts = [
     "Поставка компьютерной техники", "Поставка офисной мебели", "Поставка канцелярских товаров",
     "Поставка медицинских масок", "Поставка стройматериалов", "Поставка продуктов питания",
@@ -85,5 +85,5 @@ for i, (emb, name) in enumerate(zip(all_emb_layers, layer_names)):
 plt.suptitle('Изменение векторных представлений тендеров по слоям RuBERT (t-SNE)', fontsize=16, y=1.02)
 plt.tight_layout()
 plt.savefig('tsne_layers_final.png', dpi=300, bbox_inches='tight')
-print("✅ ВИЗУАЛИЗАЦИЯ СОХРАНЕНА: tsne_layers_final.png")
+print(" ВИЗУАЛИЗАЦИЯ СОХРАНЕНА: tsne_layers_final.png")
 plt.show()
