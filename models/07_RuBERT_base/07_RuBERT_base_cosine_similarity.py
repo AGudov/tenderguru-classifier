@@ -11,7 +11,7 @@ import seaborn as sns
 from sklearn.metrics.pairwise import cosine_similarity
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-# Путь к модели (папка models внутри текущей)
+# Путь к модели 
 model_path = "./models"
 
 print("Загрузка модели...")
@@ -70,5 +70,5 @@ plt.axvline(x=3, color='red', linestyle='--', linewidth=2)
 plt.title('Косинусное сходство эмбеддингов [CLS]\nT1–T3: Supply (поставки), T4–T6: Work (работы)', fontsize=14)
 plt.tight_layout()
 plt.savefig('cosine_similarity.png', dpi=300)
-print("✅ Визуализация сохранена: cosine_similarity.png")
+print(" Визуализация сохранена: cosine_similarity.png")
 plt.show()
