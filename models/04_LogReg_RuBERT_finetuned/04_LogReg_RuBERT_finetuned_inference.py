@@ -60,7 +60,7 @@ with open(model_dir / 'models/model.pkl', 'rb') as f:
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"  Используется: {device}")
 
-# Пытаемся загрузить дообученную модель из папки models/
+# загружаем дообученную модель из папки models/
 try:
     tokenizer = AutoTokenizer.from_pretrained(model_dir / 'models')
     bert_model = AutoModel.from_pretrained(model_dir / 'models').to(device)
@@ -130,6 +130,6 @@ if not test_mode:
     print(f"   supply: {len(df[df['predicted_class'] == 'supply'])}")
     print(f"   work: {len(df[df['predicted_class'] == 'work'])}")
 else:
-    print("\n📌 ПРИМЕРЫ:")
+    print("\n ПРИМЕРЫ:")
     for _, row in df.head(10).iterrows():
         print(f"   {row['predicted_class']:6} | {row['confidence']:.2%} | {row['contract_name'][:50]}...")
