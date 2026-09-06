@@ -10,19 +10,19 @@ import os
 
 # =================== ЗАГРУЗКА МОДЕЛИ ===================
 print("=" * 60)
-print("🤖 ЗАГРУЗКА МОДЕЛИ LogReg + TF-IDF")
+print("ЗАГРУЗКА МОДЕЛИ LogReg + TF-IDF")
 print("=" * 60)
 
 try:
     with open('models/model.pkl', 'rb') as f:
         model = pickle.load(f)
-    print("✅ Модель загружена")
+    print("Модель загружена")
 
     with open('models/vectorizer.pkl', 'rb') as f:
         vectorizer = pickle.load(f)
-    print("✅ Векторизатор загружен")
+    print("Векторизатор загружен")
 except FileNotFoundError:
-    print("❌ Ошибка: модель не найдена. Сначала обучи модель (python3 train.py)")
+    print("Ошибка: модель не найдена. Сначала обучи модель (python3 train.py)")
     sys.exit(1)
 
 print("=" * 60)
@@ -53,19 +53,19 @@ def predict(text):
     }
 
 # =================== ИНТЕРАКТИВНЫЙ РЕЖИМ ===================
-print("\n💬 ВВЕДИТЕ НАЗВАНИЕ ТЕНДЕРА")
+print("\nВВЕДИТЕ НАЗВАНИЕ ТЕНДЕРА")
 print("   (введите 'exit' для выхода)")
 print("-" * 60)
 
 while True:
-    text = input("\n📝 Введите название: ").strip()
+    text = input("\nВведите название: ").strip()
     
     if text.lower() == 'exit':
-        print("\n👋 До свидания!")
+        print("\nДо свидания!")
         break
     
     if not text:
-        print("⚠️ Пожалуйста, введите текст")
+        print("Пожалуйста, введите текст")
         continue
     
     # Предсказание
@@ -73,7 +73,7 @@ while True:
     
     # Вывод
     print("\n" + "=" * 60)
-    print(f"📊 Результат: {result['class'].upper()}")
+    print(f"Результат: {result['class'].upper()}")
     print("=" * 60)
     print(f"   Класс: {result['class']}")
     print(f"   Уверенность: {result['confidence']:.2%}")
