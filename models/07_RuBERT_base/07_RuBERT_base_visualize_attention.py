@@ -17,7 +17,7 @@ model = AutoModelForSequenceClassification.from_pretrained(model_path, output_at
 model.eval()
 print("Модель загружена.")
 
-# НОВЫЙ, БОЛЕЕ ПОКАЗАТЕЛЬНЫЙ ПРИМЕР
+# ПРИМЕР
 text = "Поставка шпаклевки с дальнейшим ремонтом учебного заведения"
 
 inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=64)
@@ -51,5 +51,5 @@ plt.xlabel('Токены (ключ)')
 plt.ylabel('Токены (запрос)')
 plt.tight_layout()
 plt.savefig('attention_heatmap.png', dpi=300)
-print("✅ Визуализация внимания сохранена: attention_heatmap.png")
+print(" Визуализация внимания сохранена: attention_heatmap.png")
 plt.show()
