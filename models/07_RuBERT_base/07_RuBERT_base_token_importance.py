@@ -21,7 +21,7 @@ print("Модель загружена.")
 # -------------------------------------------------------------------
 # 1. Автоматически определяем, какой индекс соответствует классу Work
 # -------------------------------------------------------------------
-# Возьмём заведомо "рабочий" текст
+
 test_text = "Капитальный ремонт школы"
 test_inputs = tokenizer(test_text, return_tensors="pt", truncation=True, max_length=64)
 with torch.no_grad():
@@ -88,13 +88,13 @@ for i, (token, val) in enumerate(zip(tokens, attributions)):
 
 plt.tight_layout()
 plt.savefig('token_importance.png', dpi=300)
-print("\n✅ Визуализация сохранена: token_importance.png")
+print("\n Визуализация сохранена: token_importance.png")
 plt.show()
 
 # -------------------------------------------------------------------
-# 5. Вывод в консоль (для понимания)
+# 5. Вывод в консоль 
 # -------------------------------------------------------------------
-print("\n📊 Вклад токенов в класс Work (положительный = за Work, отрицательный = против):")
+print("\n Вклад токенов в класс Work (положительный = за Work, отрицательный = против):")
 for token, val in zip(tokens, attributions):
     direction = "ЗА Work" if val > 0 else "ПРОТИВ Work"
     print(f"  {token:12} → {val:8.4f}  ({direction})")
