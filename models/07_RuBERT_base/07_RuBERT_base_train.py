@@ -33,11 +33,11 @@ import warnings
 warnings.filterwarnings('ignore')
 
 print("=" * 60)
-print("📊 МОДЕЛЬ 7: RuBERT (ПОЛНАЯ НЕЙРОСЕТЬ, БЕЗ ДООБУЧЕНИЯ)")
+print(" МОДЕЛЬ 7: RuBERT (ПОЛНАЯ НЕЙРОСЕТЬ, БЕЗ ДООБУЧЕНИЯ)")
 print("=" * 60)
 
 # =================== 1. ЗАГРУЗКА ДАННЫХ ===================
-print("\n📂 Загрузка датасета...")
+print("\n Загрузка датасета...")
 
 with open('../tenders_labeled_clean.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
@@ -45,12 +45,12 @@ with open('../tenders_labeled_clean.json', 'r', encoding='utf-8') as f:
 texts = [item['text'] for item in data]
 labels = [1 if item['label'] == 'supply' else 0 for item in data]  # 1 = supply, 0 = work
 
-print(f"   ✅ Загружено {len(texts)} записей")
-print(f"   ✅ supply: {sum(labels)} ({sum(labels)/len(labels)*100:.1f}%)")
-print(f"   ✅ work: {len(labels)-sum(labels)} ({(len(labels)-sum(labels))/len(labels)*100:.1f}%)")
+print(f"    Загружено {len(texts)} записей")
+print(f"   supply: {sum(labels)} ({sum(labels)/len(labels)*100:.1f}%)")
+print(f"    work: {len(labels)-sum(labels)} ({(len(labels)-sum(labels))/len(labels)*100:.1f}%)")
 
 # =================== 2. РАЗБИЕНИЕ ===================
-print("\n📊 Разбиение на train/val/test (70/15/15)...")
+print("\n Разбиение на train/val/test (70/15/15)...")
 
 X_train, X_temp, y_train, y_temp = train_test_split(
     texts, labels,
@@ -66,12 +66,12 @@ X_val, X_test, y_val, y_test = train_test_split(
     stratify=y_temp
 )
 
-print(f"   ✅ Train: {len(X_train)}")
-print(f"   ✅ Val: {len(X_val)}")
-print(f"   ✅ Test: {len(X_test)}")
+print(f"    Train: {len(X_train)}")
+print(f"    Val: {len(X_val)}")
+print(f"    Test: {len(X_test)}")
 
 # =================== 3. ПОДГОТОВКА ДАТАСЕТА ===================
-print("\n🔤 Подготовка датасета...")
+print("\n Подготовка датасета...")
 
 # Создаем словари
 train_data = {'text': X_train, 'label': y_train}
@@ -104,23 +104,23 @@ train_dataset = train_dataset.remove_columns(['text'])
 val_dataset = val_dataset.remove_columns(['text'])
 test_dataset = test_dataset.remove_columns(['text'])
 
-print("   ✅ Датасет готов")
+print("    Датасет готов")
 
 # =================== 4. ЗАГРУЗКА МОДЕЛИ ===================
-print("\n🧠 Загрузка RuBERT...")
+print("\n Загрузка RuBERT...")
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f"   ✅ Используется: {device}")
+print(f"    Используется: {device}")
 
 model = AutoModelForSequenceClassification.from_pretrained(
     "DeepPavlov/rubert-base-cased",
     num_labels=2
 ).to(device)
 
-print("   ✅ RuBERT загружен")
+print("    RuBERT загружен")
 
 # =================== 5. НАСТРОЙКА ОБУЧЕНИЯ ===================
-print("\n⚙️ Настройка обучения...")
+print("\n Настройка обучения...")
 
 training_args = TrainingArguments(
     output_dir='./results',
@@ -147,8 +147,8 @@ def compute_metrics(eval_pred):
     return {'accuracy': acc, 'f1': f1}
 
 # =================== 6. ОБУЧЕНИЕ ===================
-print("\n🤖 Обучение RuBERT...")
-print("   ⏳ Это займёт 20-40 минут...")
+print("\n Обучение RuBERT...")
+print("    Это займёт 20-40 минут...")
 
 start_time = time.time()
 
@@ -163,19 +163,19 @@ trainer = Trainer(
 trainer.train()
 
 train_time = time.time() - start_time
-print(f"   ✅ Модель обучена за {train_time:.2f} сек ({train_time/60:.2f} мин)")
+print(f"    Модель обучена за {train_time:.2f} сек ({train_time/60:.2f} мин)")
 
 # =================== 7. СОХРАНЕНИЕ МОДЕЛИ ===================
-print("\n💾 Сохранение модели...")
+print("\n Сохранение модели...")
 
 os.makedirs('models', exist_ok=True)
 model.save_pretrained('models')
 tokenizer.save_pretrained('models')
 
-print("   ✅ Модель сохранена в models/")
+print("    Модель сохранена в models/")
 
 # =================== 8. ОЦЕНКА НА ТЕСТОВОЙ ВЫБОРКЕ ===================
-print("\n📈 Оценка модели на тестовой выборке...")
+print("\n Оценка модели на тестовой выборке...")
 
 predictions = trainer.predict(test_dataset)
 y_pred = np.argmax(predictions.predictions, axis=-1)
@@ -187,7 +187,7 @@ recall = recall_score(y_test, y_pred)
 f1 = f1_score(y_test, y_pred)
 roc_auc = roc_auc_score(y_test, y_proba)
 
-print("   📊 Результаты на тестовой выборке:")
+print("    Результаты на тестовой выборке:")
 print(f"      Accuracy:  {accuracy:.4f}")
 print(f"      Precision: {precision:.4f}")
 print(f"      Recall:    {recall:.4f}")
@@ -195,7 +195,7 @@ print(f"      F1-Score:  {f1:.4f}")
 print(f"      ROC-AUC:   {roc_auc:.4f}")
 
 # =================== 9. CONFUSION MATRIX ===================
-print("\n📊 Confusion Matrix:")
+print("\n Confusion Matrix:")
 cm = confusion_matrix(y_test, y_pred)
 print(cm)
 
@@ -207,11 +207,11 @@ plt.title('Confusion Matrix: RuBERT (base)')
 plt.ylabel('True')
 plt.xlabel('Predicted')
 plt.savefig('confusion_matrix.png', dpi=150)
-print("   ✅ Confusion Matrix сохранён: confusion_matrix.png")
+print("    Confusion Matrix сохранён: confusion_matrix.png")
 
 # =================== 10. ИТОГ ===================
 print("\n" + "=" * 60)
-print("📊 ИТОГИ МОДЕЛИ 7")
+print(" ИТОГИ МОДЕЛИ 7")
 print("=" * 60)
 print(f"   Accuracy:  {accuracy:.4f}")
 print(f"   F1-Score:  {f1:.4f}")
@@ -227,4 +227,4 @@ with open('results.txt', 'w', encoding='utf-8') as f:
     f.write(f"ROC-AUC:   {roc_auc:.4f}\n")
     f.write(f"Время обучения: {train_time:.2f} сек\n")
 
-print("   ✅ Результаты сохранены в results.txt")
+print("    Результаты сохранены в results.txt")
