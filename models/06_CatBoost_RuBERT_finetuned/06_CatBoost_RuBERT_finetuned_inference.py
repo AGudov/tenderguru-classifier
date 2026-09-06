@@ -30,10 +30,10 @@ for arg in sys.argv:
             pass
 
 print("=" * 60)
-print("🧠 ИНФЕРЕНС: RuBERT (дообученный) + CatBoost")
+print(" ИНФЕРЕНС: RuBERT (дообученный) + CatBoost")
 print("=" * 60)
 if test_mode:
-    print("🧪 РЕЖИМ ТЕСТА: первые {} записей".format(limit if limit else 50))
+    print(" РЕЖИМ ТЕСТА: первые {} записей".format(limit if limit else 50))
 
 # 1. Загрузка данных
 CONTRACTS_FILE = "/root/VKR/выгрузка_победителей/contracts_today_current.json"
@@ -46,9 +46,9 @@ if test_mode:
     if limit is None:
         limit = 50
     contracts = contracts[:limit]
-    print(f"🧪 Тестовый режим: {len(contracts)} записей")
+    print(f" Тестовый режим: {len(contracts)} записей")
 else:
-    print(f"📂 Загружено {len(contracts)} контрактов")
+    print(f" Загружено {len(contracts)} контрактов")
 
 # 2. Загрузка CatBoost модели
 model_dir = Path(__file__).parent
@@ -58,15 +58,15 @@ with open(model_dir / 'models/model.pkl', 'rb') as f:
 
 # 3. Загрузка ДООБУЧЕННОГО RuBERT
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f"💻 Используется: {device}")
+print(f" Используется: {device}")
 
-# Пытаемся загрузить дообученную модель из папки models/
+# загружаем дообученную модель из папки models/
 try:
     tokenizer = AutoTokenizer.from_pretrained(model_dir / 'models')
     bert_model = AutoModel.from_pretrained(model_dir / 'models').to(device)
-    print("✅ Загружена ДООБУЧЕННАЯ RuBERT")
+    print(" Загружена ДООБУЧЕННАЯ RuBERT")
 except:
-    print("⚠️ Дообученная модель не найдена, загружаем базовую")
+    print(" Дообученная модель не найдена, загружаем базовую")
     tokenizer = AutoTokenizer.from_pretrained("DeepPavlov/rubert-base-cased")
     bert_model = AutoModel.from_pretrained("DeepPavlov/rubert-base-cased").to(device)
 
@@ -101,7 +101,7 @@ for item in contracts:
             'region': item.get('Region', ''),
         })
 
-print(f"📊 Обрабатывается {len(texts)} записей...")
+print(f" Обрабатывается {len(texts)} записей...")
 
 # 6. Инференс с прогресс-баром
 embeddings = []
@@ -123,13 +123,13 @@ for i, (p, prob) in enumerate(zip(preds, probs)):
 df = pd.DataFrame(rows)
 df.to_csv(output_file, index=False, encoding='utf-8-sig')
 
-print(f"✅ Результаты сохранены в {output_file}")
-print(f"📊 Всего предсказано: {len(df)}")
+print(f" Результаты сохранены в {output_file}")
+print(f" Всего предсказано: {len(df)}")
 
 if not test_mode:
     print(f"   supply: {len(df[df['predicted_class'] == 'supply'])}")
     print(f"   work: {len(df[df['predicted_class'] == 'work'])}")
 else:
-    print("\n📌 ПРИМЕРЫ:")
+    print("\n ПРИМЕРЫ:")
     for _, row in df.head(10).iterrows():
         print(f"   {row['predicted_class']:6} | {row['confidence']:.2%} | {row['contract_name'][:50]}...")
