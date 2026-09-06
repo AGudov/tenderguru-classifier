@@ -1,0 +1,6 @@
+Accuracy:  0.9925
+Precision: 0.9944
+Recall:    0.9934
+F1-Score:  0.9939
+ROC-AUC:   0.9992
+Время обучения: 175.63 сек
