@@ -53,22 +53,22 @@ def get_latest_file(directory):
 
 # =================== 2. ЗАГРУЗКА МОДЕЛИ ===================
 log("=" * 60)
-log("🚀 ЗАПУСК ИНФЕРЕНСА v3")
+log(" ЗАПУСК ИНФЕРЕНСА v3")
 log("=" * 60)
 
-log("🧠 Загрузка модели RuBERT...")
+log(" Загрузка модели RuBERT...")
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-log(f"💻 Используется: {device}")
+log(f" Используется: {device}")
 
 try:
     tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
     model = AutoModelForSequenceClassification.from_pretrained(MODEL_DIR)
     model = model.to(device)
     model.eval()
-    log("✅ Модель загружена")
+    log(" Модель загружена")
 except Exception as e:
-    log(f"❌ Ошибка загрузки модели: {e}")
+    log(f"  Ошибка загрузки модели: {e}")
     sys.exit(1)
 
 # =================== 3. ФУНКЦИЯ ПРЕДСКАЗАНИЯ ===================
@@ -98,24 +98,24 @@ def predict_class(text):
 # =================== 4. ОБРАБОТКА ===================
 contracts_file = get_latest_file(CONTRACTS_DIR)
 if not contracts_file:
-    log("❌ Нет файлов контрактов в папке 01_Победители")
+    log(" Нет файлов контрактов в папке 01_Победители")
     sys.exit(1)
 
-log(f"📂 Входной файл: {contracts_file}")
+log(f" Входной файл: {contracts_file}")
 
 # Извлекаем базовое имя файла
 base_name = os.path.basename(contracts_file)
-# contracts_today_20260815_153612.json → tender_today_20260815_153612
+# contracts_today_20260815_153612.json - tender_today_20260815_153612
 base_name_no_ext = base_name.replace('.json', '').replace('contracts_', 'tender_')
 
-log(f"📝 Базовое имя: {base_name_no_ext}")
+log(f" Базовое имя: {base_name_no_ext}")
 
 with open(contracts_file, 'r', encoding='utf-8') as f:
     contracts = json.load(f)
 
-log(f"📄 Загружено {len(contracts)} контрактов")
+log(f" Загружено {len(contracts)} контрактов")
 
-log("🔄 Классификация...")
+log(" Классификация...")
 classified = []
 supply_count = 0
 work_count = 0
@@ -137,9 +137,9 @@ for i, contract in enumerate(contracts, 1):
     else:
         work_count += 1
 
-log(f"   ✅ Обработано {len(classified)} контрактов")
-log(f"   ✅ supply: {supply_count}")
-log(f"   ✅ work: {work_count}")
+log(f"    Обработано {len(classified)} контрактов")
+log(f"    supply: {supply_count}")
+log(f"    work: {work_count}")
 
 # =================== 5. СОХРАНЯЕМ ===================
 
@@ -147,28 +147,28 @@ log(f"   ✅ work: {work_count}")
 output_file = os.path.join(OUTPUT_DIR, f"{base_name_no_ext}_classified.json")
 with open(output_file, 'w', encoding='utf-8') as f:
     json.dump(classified, f, ensure_ascii=False, indent=2)
-log(f"💾 Все контракты: {output_file}")
+log(f" Все контракты: {output_file}")
 
 # 5.2 Только поставки
 supply_only = [c for c in classified if c.get('predicted_class') == 'supply']
 supply_file = os.path.join(OUTPUT_DIR, f"{base_name_no_ext}_supply.json")
 with open(supply_file, 'w', encoding='utf-8') as f:
     json.dump(supply_only, f, ensure_ascii=False, indent=2)
-log(f"📊 Поставки ({len(supply_only)}): {supply_file}")
+log(f" Поставки ({len(supply_only)}): {supply_file}")
 
 # 5.3 Только работы
 work_only = [c for c in classified if c.get('predicted_class') == 'work']
 work_file = os.path.join(OUTPUT_DIR, f"{base_name_no_ext}_work.json")
 with open(work_file, 'w', encoding='utf-8') as f:
     json.dump(work_only, f, ensure_ascii=False, indent=2)
-log(f"📊 Работы ({len(work_only)}): {work_file}")
+log(f" Работы ({len(work_only)}): {work_file}")
 
 # 5.4 Копируем поставки в папку поставки_общая
 supply_all_file = os.path.join(SUPPLY_ALL_DIR, f"{base_name_no_ext}_supply_only.json")
 with open(supply_all_file, 'w', encoding='utf-8') as f:
     json.dump(supply_only, f, ensure_ascii=False, indent=2)
-log(f"📊 Копия поставок в общую папку: {supply_all_file}")
+log(f" Копия поставок в общую папку: {supply_all_file}")
 
 log("=" * 60)
-log("🎉 ГОТОВО!")
+log(" ГОТОВО!")
 log("=" * 60)
