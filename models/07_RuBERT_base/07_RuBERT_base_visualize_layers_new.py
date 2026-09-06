@@ -18,15 +18,15 @@ tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForSequenceClassification.from_pretrained(model_path)
 model.eval()
 
-# Загружаем ваши предсказания (чтобы взять реальные названия и лейблы)
-df = pd.read_csv("predictions_07.csv")  # У вас есть этот файл
+# Загружаем предсказания 
+df = pd.read_csv("predictions_07.csv")  
 
-# Берем случайные 100 Supply и 100 Work (итого 200)
+# Берем случайные 100 Supply и 100 Work 
 supply_sample = df[df['true_label'] == 0].sample(n=100, random_state=42)
 work_sample = df[df['true_label'] == 1].sample(n=100, random_state=42)
 sample_df = pd.concat([supply_sample, work_sample])
 
-texts = sample_df['ContractName'].tolist()  # или как называется колонка с текстом
+texts = sample_df['ContractName'].tolist()  
 labels = sample_df['true_label'].tolist()
 
 print(f"Всего текстов: {len(texts)}")
@@ -47,7 +47,7 @@ print("Запуск t-SNE для 200 точек...")
 tsne = TSNE(n_components=2, random_state=42, perplexity=30, max_iter=1000)
 emb_2d = tsne.fit_transform(embeddings)
 
-# Рисуем
+
 plt.figure(figsize=(10, 8))
 colors = ['#1f77b4' if l == 0 else '#d62728' for l in labels]
 plt.scatter(emb_2d[:, 0], emb_2d[:, 1], c=colors, s=30, alpha=0.6)
@@ -61,5 +61,5 @@ plt.legend(handles=legend_elements, loc='upper right')
 
 plt.grid(True, alpha=0.3)
 plt.savefig('tsne_many.png', dpi=300, bbox_inches='tight')
-print("✅ СОХРАНЕНО: tsne_many.png")
+print(" СОХРАНЕНО: tsne_many.png")
 plt.show()
