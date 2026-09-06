@@ -20,7 +20,7 @@ CONTRACTS_FILE = "/root/VKR/выгрузка_победителей/contracts_to
 with open(CONTRACTS_FILE, 'r', encoding='utf-8') as f:
     contracts = json.load(f)
 
-print(f"📂 Загружено {len(contracts)} контрактов")
+print(f" Загружено {len(contracts)} контрактов")
 
 # 2. Загрузка модели
 model_dir = Path(__file__).parent
